@@ -1,5 +1,6 @@
 package com.example.spearmint;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -98,6 +99,16 @@ public class ExperimentFragment extends Fragment implements AddExperimentFragmen
                 experimentList.remove(position);
                 customAdapter.notifyDataSetChanged();
                 return false;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i >= 0){
+                    Intent intent = new Intent(view.getContext(), ExperimentDataFragment.class);
+                    startActivity(intent);
+                }
             }
         });
 
