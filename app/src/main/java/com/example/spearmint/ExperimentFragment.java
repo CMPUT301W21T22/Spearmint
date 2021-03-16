@@ -7,8 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -17,7 +21,7 @@ import java.util.ArrayList;
  * Use the {@link ExperimentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExperimentFragment extends Fragment {
+public class ExperimentFragment extends Fragment implements AddExperimentFragment.OnFragmentInteractionListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,7 +61,10 @@ public class ExperimentFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+
+    ExperimentAdapter customAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +74,6 @@ public class ExperimentFragment extends Fragment {
         Abram Hindle, "Lab 3 instructions - CustomList", Public Domain, 2021-02-12, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
         https://stackoverflow.com/users/788677/rakhita. (2011, Nov 17). Custom Adapter for List View. https://stackoverflow.com/. https://stackoverflow.com/questions/8166497/custom-adapter-for-list-view/8166802#8166802
          */
-
         View view = inflater.inflate(R.layout.fragment_experiment, container, false);
         ArrayList<Experiment> experimentList = new ArrayList<>();
 
@@ -81,6 +87,25 @@ public class ExperimentFragment extends Fragment {
 
         listView.setAdapter(customAdapter);
 
+        final Button addExperiment = (Button) view.findViewById(R.id.add_experiment);
+        addExperiment.setOnClickListener((v) -> {
+            new AddExperimentFragment().show(getActivity().getSupportFragmentManager(), "ADD_TRIAL");
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                experimentList.remove(position);
+                customAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onOkPressed(Experiment experiment) {
+        //
     }
 }
